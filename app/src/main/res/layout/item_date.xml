@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:maxLines="1"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimarySurface"
             android:textSize="14dp"
             android:textStyle="bold"
             tools:text="FRIDAY, Sep 25 "/>

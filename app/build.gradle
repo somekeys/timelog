@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.timglog"
-        minSdkVersion 16
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -78,7 +78,6 @@ dependencies {
 // Material design
     implementation "com.google.android.material:material:$rootProject.materialVersion"
 
-    implementation 'joda-time:joda-time:2.10.6'
 
 // Testing
     testImplementation 'junit:junit:4.13'

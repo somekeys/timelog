@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,7 +25,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:text="Task name"
-        android:textColor="@color/design_default_color_on_secondary"
+        android:textColor="?attr/colorOnPrimarySurface"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/durationView"
         app:layout_constraintTop_toTopOf="@+id/durationView" />
@@ -39,7 +38,13 @@
         app:layout_constraintStart_toStartOf="@+id/titleView"
         app:layout_constraintTop_toBottomOf="@+id/titleView" />
 
-
+    <TextView
+        android:id="@+id/timeSpanView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3:20 - 10:50PM"
+        app:layout_constraintStart_toStartOf="@+id/categoryView"
+        app:layout_constraintTop_toBottomOf="@+id/categoryView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

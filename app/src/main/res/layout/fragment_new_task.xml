@@ -25,6 +25,12 @@
             android:layout_marginBottom="8dp"
             android:textSize="22sp">
 
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name" />
+
             <MultiAutoCompleteTextView
                 android:id="@+id/task_name"
                 android:layout_width="match_parent"
@@ -32,6 +38,12 @@
                 android:hint="Name"
 
                 />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Category" />
 
             <MultiAutoCompleteTextView
                 android:id="@+id/task_category"

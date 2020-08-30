@@ -1,21 +1,22 @@
 package com.example.timglog
 
-import org.joda.time.DateTime
+import java.time.*
 
 object TaskItems {
 
     fun convertList(tasks : List<Task>): MutableList<TaskItem> {
         var  taskItemList = mutableListOf<TaskItem>()
-        var  daytotasks  : HashMap<DateTime,MutableList<TaskItem>> = HashMap<DateTime,MutableList<TaskItem>>()
+        var  daytotasks  : HashMap<Long,MutableList<TaskItem>> = HashMap<Long,MutableList<TaskItem>>()
         tasks.forEach {
-            if(daytotasks.containsKey(DateTime(it.endTime).withMillisOfDay(0))){
-                daytotasks[DateTime(it.endTime).withMillisOfDay(0)] = mutableListOf<TaskItem>()
+            val dayTime = it.endTime - it.endTime%(60*60*24)
+            if(!daytotasks.containsKey(dayTime) ){
+                daytotasks[dayTime] = mutableListOf<TaskItem>()
             }
-            daytotasks[DateTime(it.endTime).withMillisOfDay(0)]!!.add(TaskItem.TaskEntry(it))}
+            daytotasks[dayTime]!!.add(TaskItem.TaskEntry(it))}
         val  daytotasks_sorted = daytotasks.toSortedMap()
         daytotasks_sorted.forEach { (k,v) ->
-            taskItemList.add(TaskItem.Day(k))
             taskItemList.addAll(v)
+            taskItemList.add( TaskItem.Day(LocalDateTime.ofEpochSecond(k,0,OffsetDateTime.now().offset)))
         }
 
         return taskItemList.asReversed()

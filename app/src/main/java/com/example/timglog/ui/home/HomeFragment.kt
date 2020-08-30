@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.timglog.TaskItems
 import com.example.timglog.TaskListAdapter
 import com.example.timglog.TaskViewModel
 import com.example.timglog.databinding.FragmentHomeBinding
@@ -33,9 +34,8 @@ class HomeFragment : Fragment() {
 
         val recyclerView = binding.recyclerview
         val adapter =  TaskListAdapter(activity)
-//        val layoutManager = StickyHeadersLinearLayoutManager<TaskListAdapter>(
-//            context, LinearLayoutManager.VERTICAL, false)
-        val layoutManager = LinearLayoutManager(activity)
+        val layoutManager = StickyHeadersLinearLayoutManager<TaskListAdapter>(
+            context, LinearLayoutManager.VERTICAL, false)
 
         val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
 
@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
         recyclerView.addItemDecoration(dividerItemDecoration)
         taskViewModel.alltasks.observe(viewLifecycleOwner, Observer { words ->
             // Update the cached copy of the words in the adapter.
-            words?.let { adapter.setTasks(it) }
+            words?.let { adapter.submitList(TaskItems.convertList(it)) }
         })
 
         return binding.root

@@ -12,10 +12,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.joda.time.DateTime
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.log10
+import kotlin.time.milliseconds
 
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -39,7 +39,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         repository = TaskRepository(tasksDao)
         alltasks = repository.allTasks
         duration_text.value = SpannableString("")
-        startTime.value = DateTime.now().millis
+        startTime.value = System.currentTimeMillis()/1000
         title.value = "Foo"
         category.value = "foo"
 
@@ -50,7 +50,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         if(running){stopTask()}
         title.value = task_title
         category.value = task_category
-        startTime.value = DateTime.now().millis
+        startTime.value = System.currentTimeMillis()/1000
         seconds = 0
         running = true
         runTimer()
@@ -83,7 +83,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         running = false
         handler.removeCallbacksAndMessages(null)
         insert(Task(0,title.value!!,category.value!!,startTime.value!!,
-            DateTime.now().millis ))
+            System.currentTimeMillis()/1000 ))
 
     }
 

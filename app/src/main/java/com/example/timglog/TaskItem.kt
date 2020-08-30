@@ -1,9 +1,10 @@
 package com.example.timglog
 
-import org.joda.time.DateTime
+import java.time.LocalDateTime
+
 
 sealed class TaskItem{
-    data class Day(val day : DateTime) : TaskItem()
+    data class Day(val day : LocalDateTime) : TaskItem()
     data class TaskEntry(val task: Task) : TaskItem()
 
 }
