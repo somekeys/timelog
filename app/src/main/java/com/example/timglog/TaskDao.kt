@@ -12,6 +12,6 @@ abstract class TaskDao{
     @Insert
     abstract fun insert(task:Task) :Long
 
-    @Query("SELECT * from tasks")
+    @Query("SELECT * from tasks ORDER BY endTime DESC")
     abstract fun getAll(): LiveData<List<Task>>
 }

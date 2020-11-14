@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.timglog.databinding.ItemDateBinding
 import com.example.timglog.databinding.ItemTaskBinding
 import com.example.timglog.ui.home.StickyHeaders
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 class TaskListAdapter (
@@ -23,6 +25,7 @@ class TaskListAdapter (
         val titleView: TextView = binding.titleView
         val durationView : TextView=binding.durationView
         val categoryView : TextView=binding.categoryView
+        val timespanView =binding.timeSpanView
 
     }
 
@@ -62,6 +65,12 @@ class TaskListAdapter (
                 holder.durationView.text =
                     TaskViewModel.secondsToSpaning(((current.endTime - current.startTime)).toInt())
                 holder.categoryView.text = current.category
+                val formatter = DateTimeFormatter.ofPattern("hh:mm a")
+                holder.timespanView.text = formatter.format(
+                    LocalDateTime.ofEpochSecond(current.startTime,0,
+                        OffsetDateTime.now().offset)) + "-"+ formatter.format(
+                        LocalDateTime.ofEpochSecond(current.endTime,0,
+                            OffsetDateTime.now().offset))
             }
             else ->{
                 val holder  = holder as DateViewHolder
