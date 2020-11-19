@@ -2,6 +2,7 @@ package com.example.timglog
 
 import android.app.Application
 import android.graphics.Typeface
+import android.os.AsyncTask
 import android.os.Handler
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
@@ -26,11 +27,14 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     val handler : Handler = Handler()
 
     val alltasks: LiveData<List<Task>>
+    val categories: LiveData<List<String>>
 
     val title : MutableLiveData<String> = MutableLiveData()
     val category : MutableLiveData<String> = MutableLiveData()
     var startTime:MutableLiveData<Long> = MutableLiveData()
     val duration_text : MutableLiveData<SpannableString>   = MutableLiveData()
+    var nameTaskMap = hashMapOf<String,Task>()
+
     private var seconds : Int = 0
 
 
@@ -38,12 +42,18 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         val tasksDao = TimeLogDatabase.getDatabase(application).taskDao()
         repository = TaskRepository(tasksDao)
         alltasks = repository.allTasks
+        categories = repository.cats
+
         duration_text.value = SpannableString("")
         startTime.value = System.currentTimeMillis()/1000
         title.value = "Foo"
         category.value = "foo"
 
 
+    }
+
+    fun getLastByName(name:String): Task? {
+        return nameTaskMap[name]
     }
 
     fun startTask( task_title : String, task_category : String ){

@@ -3,7 +3,10 @@ package com.example.timglog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.timglog.databinding.FragmentNewTaskBinding
@@ -46,14 +49,18 @@ class NewTaskFragment : Fragment() {
     ): View? {
         Log.d( NewTaskFragment::class.java.name, "oncreate view")
 
-
-
         // Inflate the layout for this fragment
         taskViewModel = ViewModelProvider(requireActivity()).get(TaskViewModel::class.java)
         binding =  FragmentNewTaskBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpAutoComplete()
+
+    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         Log.d( NewTaskFragment::class.java.name, "oncreate option menu")
 
@@ -74,6 +81,54 @@ class NewTaskFragment : Fragment() {
 
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    /**
+     * setup adaptors for auto complete for name and category
+     */
+    private fun setUpAutoComplete(){
+        taskViewModel.alltasks.observe(viewLifecycleOwner, Observer { tasks->
+            taskViewModel.nameTaskMap = hashMapOf()
+            for (task in tasks){
+                taskViewModel.nameTaskMap.getOrPut(task.name){task}
+            }
+
+            val nameAdapter = context?.let { ArrayAdapter(it,R.layout.item_select,taskViewModel.nameTaskMap.keys.toList()) }
+            binding.taskName.setAdapter(nameAdapter)
+
+
+        })
+
+        taskViewModel.categories.observe(viewLifecycleOwner, Observer { tags ->
+
+            val categoryAdapter = context?.let { ArrayAdapter(it, R.layout.item_select,tags) }
+            binding.taskCategory.setAdapter(categoryAdapter)
+        })
+
+        binding.taskName.setOnItemClickListener { parent, view, position, id ->
+            binding.taskName.adapter.getItem(position).toString().also {
+                val task : Task? = taskViewModel.getLastByName(it)
+                if (task != null) {
+                    binding.taskCategory.setText(task.category)
+                }
+
+            }
+        }
+        //show dropdown when no input
+        binding.taskCategory.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus){
+                binding.taskCategory.showDropDown()
+            }
+        })
+        binding.taskName.setOnFocusChangeListener( View.OnFocusChangeListener { v, hasFocus ->
+            if(hasFocus){
+                binding.taskName.showDropDown()
+            }
+        })
+        binding.taskCategory.setOnTouchListener { v, event ->  binding.taskCategory.showDropDown();false;}
+        binding.taskName.setOnTouchListener { v, event -> binding.taskName.showDropDown();false; }
+
+
     }
 
     companion object {

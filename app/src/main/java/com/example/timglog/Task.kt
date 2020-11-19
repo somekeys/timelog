@@ -12,7 +12,6 @@ data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
 
-    @ColumnInfo(name = "word")
     val name:String,
 
     val category: String,

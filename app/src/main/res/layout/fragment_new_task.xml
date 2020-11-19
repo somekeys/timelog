@@ -31,8 +31,10 @@
                 android:layout_height="wrap_content"
                 android:text="Name" />
 
-            <MultiAutoCompleteTextView
+            <AutoCompleteTextView
                 android:id="@+id/task_name"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Name"
@@ -41,12 +43,15 @@
 
             <TextView
                 android:id="@+id/textView2"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Category" />
 
-            <MultiAutoCompleteTextView
+            <AutoCompleteTextView
                 android:id="@+id/task_category"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Category" />
