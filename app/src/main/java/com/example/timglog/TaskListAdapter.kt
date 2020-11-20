@@ -31,6 +31,13 @@ class TaskListAdapter (
 
     inner class DateViewHolder(val binding: ItemDateBinding) : RecyclerView.ViewHolder(binding.root)
 
+    fun getTask(position: Int): Task?{
+        val task = getItem(position)
+        return when(task){
+            is TaskItem.Day ->  null
+            is TaskItem.TaskEntry -> task.task
+        }
+    }
     override fun getItemViewType(position: Int): Int {
         return when(getItem(position)){
             is TaskItem.Day ->  DAY_ITEM

@@ -1,16 +1,19 @@
 package com.example.timglog
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.timglog.databinding.FragmentNewTaskBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,6 +43,7 @@ class NewTaskFragment : Fragment() {
         }
 
 
+
     }
 
     override fun onCreateView(
@@ -47,7 +51,7 @@ class NewTaskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d( NewTaskFragment::class.java.name, "oncreate view")
+        Log.d(NewTaskFragment::class.java.name, "oncreate view")
 
         // Inflate the layout for this fragment
         taskViewModel = ViewModelProvider(requireActivity()).get(TaskViewModel::class.java)
@@ -60,9 +64,15 @@ class NewTaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpAutoComplete()
 
+        binding.taskName.requestFocus()
+//        binding.taskName.showDropDown()
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.taskName, InputMethodManager.SHOW_IMPLICIT)
+
+
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d( NewTaskFragment::class.java.name, "oncreate option menu")
+        Log.d(NewTaskFragment::class.java.name, "oncreate option menu")
 
 //        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.task_edit, menu)
@@ -73,9 +83,16 @@ class NewTaskFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.done -> {
-                taskViewModel.startTask(binding.taskName.text.toString(),binding.taskCategory.text.toString())
-                findNavController().navigate(R.id.action_nav_newtask_to_nav_task)
-
+                val name = binding.taskName.text.toString()
+                val cate = binding.taskCategory.text.toString()
+                if (name == null || name == "") {
+                    Toast.makeText(context, "Name can not be empty", Toast.LENGTH_SHORT).show()
+                } else if (cate == null || cate == "") {
+                    Toast.makeText(context, "Category can not be empty", Toast.LENGTH_SHORT).show()
+                } else {
+                    taskViewModel.startTask(name, cate)
+                    findNavController().navigate(R.id.action_nav_newtask_to_nav_task)
+                }
                 return true
             }
 
@@ -87,13 +104,19 @@ class NewTaskFragment : Fragment() {
      * setup adaptors for auto complete for name and category
      */
     private fun setUpAutoComplete(){
-        taskViewModel.alltasks.observe(viewLifecycleOwner, Observer { tasks->
+        taskViewModel.alltasks.observe(viewLifecycleOwner, Observer { tasks ->
             taskViewModel.nameTaskMap = hashMapOf()
-            for (task in tasks){
-                taskViewModel.nameTaskMap.getOrPut(task.name){task}
+            for (task in tasks) {
+                taskViewModel.nameTaskMap.getOrPut(task.name) { task }
             }
 
-            val nameAdapter = context?.let { ArrayAdapter(it,R.layout.item_select,taskViewModel.nameTaskMap.keys.toList()) }
+            val nameAdapter = context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.item_select,
+                    taskViewModel.nameTaskMap.keys.toList()
+                )
+            }
             binding.taskName.setAdapter(nameAdapter)
 
 
@@ -101,7 +124,7 @@ class NewTaskFragment : Fragment() {
 
         taskViewModel.categories.observe(viewLifecycleOwner, Observer { tags ->
 
-            val categoryAdapter = context?.let { ArrayAdapter(it, R.layout.item_select,tags) }
+            val categoryAdapter = context?.let { ArrayAdapter(it, R.layout.item_select, tags) }
             binding.taskCategory.setAdapter(categoryAdapter)
         })
 
@@ -115,18 +138,18 @@ class NewTaskFragment : Fragment() {
             }
         }
         //show dropdown when no input
-        binding.taskCategory.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
-            if (hasFocus){
+        binding.taskCategory.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
                 binding.taskCategory.showDropDown()
             }
-        })
-        binding.taskName.setOnFocusChangeListener( View.OnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
+        }
+        binding.taskName.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
                 binding.taskName.showDropDown()
             }
-        })
-        binding.taskCategory.setOnTouchListener { v, event ->  binding.taskCategory.showDropDown();false;}
-        binding.taskName.setOnTouchListener { v, event -> binding.taskName.showDropDown();false; }
+        }
+        binding.taskCategory.setOnTouchListener { _, _ ->  binding.taskCategory.showDropDown();false;}
+        binding.taskName.setOnTouchListener { _, _ -> binding.taskName.showDropDown();false; }
 
 
     }

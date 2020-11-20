@@ -52,6 +52,12 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
+    fun deleteTask(task: Task){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.delete(task)
+        }
+    }
+
     fun getLastByName(name:String): Task? {
         return nameTaskMap[name]
     }

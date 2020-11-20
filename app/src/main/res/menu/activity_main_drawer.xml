@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_baseline_event_note_24"
             android:title="@string/timeline" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_stats"
             android:icon="@drawable/ic_baseline_data_usage_24"
             android:title="@string/stats" />
 
