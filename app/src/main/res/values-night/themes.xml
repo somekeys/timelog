@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/grey_900</item>
         <item name="colorPrimaryVariant">@color/black</item>
-        <item name="colorOnPrimary">#303030</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
         <!-- Secondary brand color. -->
         <!-- fab colror -->
         <item name="colorSecondary">@color/black</item>

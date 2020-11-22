@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,6 +27,7 @@
         android:text="Catagory"
         android:textSize="5sp"/>
 
+
     <TextView
         android:id="@+id/task_time"
         android:layout_width="match_parent"
@@ -37,18 +39,27 @@
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
     <Button
+        android:layout_marginRight="6dp"
         android:id="@+id/button_stop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="STOP" />
+
+
     <Button
+        android:layout_marginRight="6dp"
         android:id="@+id/button_pause"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PAUSE" />
+        android:text="PAUSE"
+
+        />
+
+
 </LinearLayout>
 
 
