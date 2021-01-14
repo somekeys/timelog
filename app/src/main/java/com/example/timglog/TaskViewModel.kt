@@ -37,6 +37,10 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     private var seconds : Int = 0
 
+    // paramotor
+    private var onTomato :Boolean = false
+    private var numTomato = 0
+
 
     init {
         val tasksDao = TimeLogDatabase.getDatabase(application).taskDao()
