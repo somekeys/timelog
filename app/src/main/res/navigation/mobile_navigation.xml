@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_stats"
             app:destination="@id/nav_stats" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_task"
+            app:destination="@id/nav_task" />
     </fragment>
 
     <fragment
