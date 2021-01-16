@@ -14,6 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
@@ -56,6 +57,13 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+
+        val taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
+        if(taskViewModel.isRunning()){
+            navController.navigate(R.id.action_nav_home_to_nav_task)
+        }
+
+
 
 
 
