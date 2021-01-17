@@ -119,6 +119,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun stopTask( ){
         running = false
         handler.removeCallbacksAndMessages(null)
+        prefs.edit().putInt("sw_state",TaskState.STOPPED.ordinal).apply()
         insert(
             Task(
                 0, title.value!!, category.value!!, startTime.value!!,

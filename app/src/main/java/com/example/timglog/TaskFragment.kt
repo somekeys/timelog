@@ -8,6 +8,7 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import android.widget.TextView
 import android.widget.Toast
@@ -18,6 +19,8 @@ import com.example.timglog.databinding.FragmentTaskBinding
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.log10
+import androidx.appcompat.app.AppCompatActivity
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,6 +47,20 @@ class TaskFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(activity is MainActivity){
+            (activity as MainActivity).hideTopBar()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if(activity is MainActivity){
+            (activity as MainActivity).showTopBar()
         }
     }
 
