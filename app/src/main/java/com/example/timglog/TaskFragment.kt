@@ -50,19 +50,7 @@ class TaskFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if(activity is MainActivity){
-            (activity as MainActivity).hideTopBar()
-        }
-    }
 
-    override fun onPause() {
-        super.onPause()
-        if(activity is MainActivity){
-            (activity as MainActivity).showTopBar()
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         Log.d(TaskFragment::class.java.name, "oncreate option menu~〜")

@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorSecondaryVariant"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_anchorGravity="start|top"
         >
 
@@ -24,14 +24,18 @@
             android:id="@+id/bar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-> CMSC417 " />
+            android:text="@string/title_bar"
+            android:textSize="15sp"
+            android:paddingLeft="16dp"
+            android:paddingRight="20dp"/>
 
         <TextView
             android:id="@+id/bar_time"
-
+            android:textSize="10sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1h23s21" />
+            android:text="1h23s21"
+            />
 
     </LinearLayout>
 

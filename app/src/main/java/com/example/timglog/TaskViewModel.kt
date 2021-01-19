@@ -32,7 +32,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     val title : MutableLiveData<String> = MutableLiveData()
     val category : MutableLiveData<String> = MutableLiveData()
-    var startTime:MutableLiveData<Long> = MutableLiveData()
+    var startTime:Long = 0
     val duration_text : MutableLiveData<SpannableString>   = MutableLiveData()
     var nameTaskMap = hashMapOf<String, Task>()
     enum class TaskState{
@@ -58,7 +58,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         return running
     }
     fun updateStopwatch(){
-        startTime.value = prefs.getLong("sw_start_time" , System.currentTimeMillis()/1000)
+        startTime = prefs.getLong("sw_start_time" , System.currentTimeMillis()/1000)
         title.value = prefs.getString("sw_title","Foo")
         category.value = prefs.getString("sw_category","Foo")
         stopwatchState = TaskState.values()[prefs.getInt("sw_state",TaskState.STOPPED.ordinal)]
@@ -67,6 +67,10 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             running = true
             runTimer()
         }
+    }
+
+    fun getmsElapsed(): Long {
+        return System.currentTimeMillis() - startTime*1000
     }
 
 
@@ -104,7 +108,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
             override fun run() {
 
-                duration_text.value = secondsToSpaning((System.currentTimeMillis()/1000 - startTime.value!!).toInt())
+                duration_text.value = secondsToSpaning((System.currentTimeMillis()/1000 - startTime).toInt())
 
                 if (running) {
                     handler.postDelayed(this, 1000)
@@ -122,7 +126,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit().putInt("sw_state",TaskState.STOPPED.ordinal).apply()
         insert(
             Task(
-                0, title.value!!, category.value!!, startTime.value!!,
+                0, title.value!!, category.value!!, startTime,
                 System.currentTimeMillis() / 1000
             )
         )
