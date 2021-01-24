@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.example.timglog.Utils.secondsToSpaning
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -25,6 +26,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private var running : Boolean = false
     val handler : Handler = Handler()
     val prefs =getDefaultSharedPreferences(getApplication())
+    var pomoClock = TomatoClock(getApplication())
 
 
     val alltasks: LiveData<List<Task>>
@@ -141,94 +143,5 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             repository.insert(task)
         }
     }
-    companion object {
 
-        fun secondsToSpaning(seconds: Int): SpannableString {
-            val hours: Int = seconds / 3600
-            val minutes: Int = (seconds % 3600) / 60
-            val secs = seconds % 60
-            var time: String = String.format(
-                Locale.getDefault(), "%dh%dm%ss", hours,
-                minutes, secs
-            )
-
-            fun Int.length() = when (this) {
-                0 -> 1
-                else -> log10(abs(toDouble())).toInt() + 1
-            }
-
-            var styleTime: SpannableString = SpannableString(time)
-
-            val relaSize = 1.5f
-            if (hours != 0) {
-                styleTime.setSpan(StyleSpan(Typeface.NORMAL), 0, hours.length(), 0)
-                styleTime.setSpan(RelativeSizeSpan(relaSize), 0, hours.length(), 0)
-
-                styleTime.setSpan(
-                    StyleSpan(Typeface.NORMAL),
-                    hours.length() + 1,
-                    hours.length() + 1 + minutes.length(),
-                    0
-                )
-                styleTime.setSpan(
-                    RelativeSizeSpan(relaSize),
-                    hours.length() + 1,
-                    hours.length() + 1 + minutes.length(),
-                    0
-                )
-
-                styleTime.setSpan(
-                    StyleSpan(Typeface.NORMAL),
-                    hours.length() + 1 + minutes.length() + 1,
-                    hours.length() + 1 + minutes.length() + 1 + secs.length(),
-                    0
-                )
-                styleTime.setSpan(
-                    RelativeSizeSpan(relaSize),
-                    hours.length() + 1 + minutes.length() + 1,
-                    hours.length() + 1 + minutes.length() + 1 + secs.length(),
-                    0
-                )
-
-
-            } else {
-                if (minutes != 0) {
-                    time = String.format(
-                        Locale.getDefault(), "%dm%ss",
-                        minutes, secs
-                    )
-                    styleTime = SpannableString(time)
-                    styleTime.setSpan(StyleSpan(Typeface.NORMAL), 0, minutes.length(), 0)
-                    styleTime.setSpan(RelativeSizeSpan(relaSize), 0, minutes.length(), 0)
-
-                    styleTime.setSpan(
-                        StyleSpan(Typeface.NORMAL),
-                        minutes.length() + 1,
-                        minutes.length() + 1 + secs.length(),
-                        0
-                    )
-                    styleTime.setSpan(
-                        RelativeSizeSpan(relaSize),
-                        minutes.length() + 1,
-                        minutes.length() + 1 + secs.length(),
-                        0
-                    )
-
-                } else {
-                    time = String.format(
-                        Locale.getDefault(), "%ss",
-                        secs
-                    )
-                    styleTime = SpannableString(time)
-                    styleTime.setSpan(StyleSpan(Typeface.NORMAL), 0, secs.length(), 0)
-                    styleTime.setSpan(RelativeSizeSpan(relaSize), 0, secs.length(), 0)
-
-
-                }
-            }
-
-            return styleTime
-
-        }
-    }
 }

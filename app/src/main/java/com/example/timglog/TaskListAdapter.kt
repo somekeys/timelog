@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.timglog.Utils.secondsToSpaning
 import com.example.timglog.databinding.ItemDateBinding
 import com.example.timglog.databinding.ItemTaskBinding
 import com.example.timglog.ui.home.StickyHeaders
@@ -69,8 +70,7 @@ class TaskListAdapter (
                 Log.d("TAsklistadapter debuging","onbind task item " + current.name )
 
                 holder.titleView.text = current.name
-                holder.durationView.text =
-                    TaskViewModel.secondsToSpaning(((current.endTime - current.startTime)).toInt())
+                holder.durationView.text = secondsToSpaning(((current.endTime - current.startTime)).toInt())
                 holder.categoryView.text = current.category
                 val formatter = DateTimeFormatter.ofPattern("hh:mm a")
                 holder.timespanView.text = formatter.format(

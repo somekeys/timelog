@@ -52,25 +52,26 @@ class TaskFragment : Fragment() {
 
 
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d(TaskFragment::class.java.name, "oncreate option menu~〜")
-
-//        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.task_ongoing, menu)
-
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.tomato -> {
-                Log.d(TaskFragment::class.java.name, "onclick tomato")
-                return super.onOptionsItemSelected(item)
-            }
-
-            else -> return super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        Log.d(TaskFragment::class.java.name, "oncreate option menu~〜")
+//
+////        super.onCreateOptionsMenu(menu, inflater)
+//        inflater.inflate(R.menu.task_ongoing, menu)
+//
+//
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when(item.itemId){
+//            R.id.tomato -> {
+//                Log.d(TaskFragment::class.java.name, "onclick tomato")
+//                taskViewModel.pomoClock.runTimer()
+//                return super.onOptionsItemSelected(item)
+//            }
+//
+//            else -> return super.onOptionsItemSelected(item)
+//        }
+//    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

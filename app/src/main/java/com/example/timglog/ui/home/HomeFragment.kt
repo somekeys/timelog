@@ -55,6 +55,7 @@ class HomeFragment : Fragment() {
                 adapter.getTask(viewHolder.adapterPosition)?.let { taskViewModel.deleteTask(it) }
             }
         }
+
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 

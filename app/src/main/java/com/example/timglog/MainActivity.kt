@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -20,12 +22,13 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),SimpleActionDialog.Listener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var   topBar:LinearLayout
@@ -77,11 +80,6 @@ class MainActivity : AppCompatActivity() {
         taskViewModel.duration_text.observe(this, Observer {  barTime.text = it })
         taskViewModel.title.observe(this, Observer {  barTitle.text = getString(R.string.title_bar,it) })
 
-        if(taskViewModel.isRunning()){
-            showTopBar()
-
-            navController.navigate(R.id.action_nav_home_to_nav_task)
-        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->  //3
             if ( (destination.id != R.id.nav_task) and  taskViewModel.isRunning()) {
@@ -89,15 +87,31 @@ class MainActivity : AppCompatActivity() {
             } else {
                 hideTopBar()
             }
-
-
         }
 
 
+        // pomodoro progress bar
+        var pBar : ProgressBar= findViewById(R.id.pBar)
+        taskViewModel.pomoClock.tomatoState.observe(this, Observer {
+            // hide progress bar if no active pomo found
+            if(it ==TomatoClock.State.STOPPED ){
+                pBar.visibility = View.GONE
+            }else{
+                pBar.visibility = View.VISIBLE
+            }
+        })
+            //updata pomodoro progress
+        taskViewModel.pomoClock.pomodoroTime.observe(this,
+                    Observer {
+                        Log.d("pomodora",it.toString() + "min passed with total " + taskViewModel.pomoClock.curTimerLength +"progress: " + 100*it/(taskViewModel.pomoClock.curTimerLength*60))
+                        pBar.progress = 1000* it/(taskViewModel.pomoClock.curTimerLength*60)   })
 
 
+        if(taskViewModel.isRunning()){
+            showTopBar()
 
-
+            navController.navigate(R.id.action_nav_home_to_nav_task)
+        }
     }
 
     fun hideTopBar(){
@@ -112,6 +126,19 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.tomato -> {
+                Log.d(TaskFragment::class.java.name, "onclick tomato")
+                val dialog = SimpleActionDialog.newInstance(null,"pomo clicked","yes","no",null)
+                dialog.show(supportFragmentManager,"pomoico")
+
+                return super.onOptionsItemSelected(item)
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
@@ -138,5 +165,9 @@ class MainActivity : AppCompatActivity() {
             notiManager.notify(211,notification )
 
         }
+    }
+
+    override fun onDialogClick(dialog: DialogFragment) {
+
     }
 }
